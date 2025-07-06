@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ toggleNav }) => {
                     backgroundClip: 'text'
                   }}
                 >
-                  Tank Time Capsule
+                  SapneSeSafar
                 </motion.h1>
                 <p className={`text-xs ${isDarkMode ? 'text-shark-navy-400' : 'text-shark-navy-600'} hidden md:block`}>
                   Shark Tank India Analytics

@@ -1,6 +1,6 @@
 # 🚀 Feature Roadmap & Opportunities
 
-This document outlines current features and future opportunities for contributors to the Tank Time Capsule platform.
+This document outlines current features and future opportunities for contributors to the SapneSeSafar platform.
 
 ## 🎯 Current Features
 

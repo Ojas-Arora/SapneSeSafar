@@ -1,8 +1,8 @@
-# 🦈 Tank Time Capsule
+# 🦈 SapneSeSafar
 
 A comprehensive, AI-powered analytics platform for Shark Tank India, providing deep insights, predictions, and analysis of deals, sharks, and startups with real-time data visualization and machine learning capabilities.
 
-![Tank Time Capsule](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=400)
+![SapneSeSafar](https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=400)
 
 ## 🚀 Features
 
@@ -389,7 +389,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Contact Information
 - **Email**: support@tanktimecapsule.com
 - **Twitter**: [@TankTimeCapsule](https://twitter.com/tanktimecapsule)
-- **LinkedIn**: [Tank Time Capsule](https://linkedin.com/company/tanktimecapsule)
+- **LinkedIn**: [SapneSeSafar](https://linkedin.com/company/tanktimecapsule)
 - **GitHub**: [Issues and Discussions](https://github.com/your-username/tank-time-capsule)
 
 ---

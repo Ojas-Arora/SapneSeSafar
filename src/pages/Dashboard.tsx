@@ -291,7 +291,7 @@ export const Dashboard: React.FC = () => {
             backgroundClip: 'text'
           }}
         >
-          Welcome to Tank Time Capsule
+          Welcome to SapneSeSafar
         </h1>
         <p className={`text-base md:text-xl ${isDarkMode ? 'text-shark-navy-400' : 'text-shark-navy-600'} max-w-3xl mx-auto px-4`}>
           Dive deep into Shark Tank India analytics with AI-powered insights, comprehensive data analysis, and real-time market intelligence.

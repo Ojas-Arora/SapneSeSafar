@@ -1,4 +1,4 @@
-# 🚀 Tank Time Capsule - Project Ideas
+# 🚀 SapneSeSafar - Project Ideas
 
 ## 🎯 Core Project Ideas
 

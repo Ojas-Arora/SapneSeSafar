@@ -43,7 +43,7 @@ export const LoadingScreen: React.FC = () => {
             isDarkMode ? 'text-white' : 'text-gray-800'
           }`}
         >
-          Tank Time Capsule
+          SapneSeSafar
         </motion.h1>
 
         <motion.p
