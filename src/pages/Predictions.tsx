@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useThemeStore } from '../store/useThemeStore';
+import { useDealsStore } from '../store/useDealsStore';
 import { motion } from 'framer-motion';
 import { Brain, TrendingUp, Target, AlertTriangle, ChevronRight, Award } from 'lucide-react';
 
 export const Predictions: React.FC = () => {
   const { isDarkMode } = useThemeStore();
+  const { deals } = useDealsStore();
   const [selectedIndustry, setSelectedIndustry] = useState<Industry>('Technology');
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
 
