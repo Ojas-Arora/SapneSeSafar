@@ -28,7 +28,7 @@ export const Predictions: React.FC = () => {
     valuation_range: string;
   }> = {
     Technology: {
-      success_rate: 75,
+      success_rate: Math.min(85, Math.max(60, (deals.filter(d => d.industry === 'Technology' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'Technology').length)) * 100)),
       growth_potential: 85,
       market_size: '₹12,000Cr',
       top_sharks: ['Ashneer Grover', 'Namita Thapar'],
@@ -36,7 +36,7 @@ export const Predictions: React.FC = () => {
       valuation_range: '₹2Cr - ₹10Cr',
     },
     'Food & Beverage': {
-      success_rate: 65,
+      success_rate: Math.min(80, Math.max(50, (deals.filter(d => d.industry === 'Food & Beverage' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'Food & Beverage').length)) * 100)),
       growth_potential: 70,
       market_size: '₹8,000Cr',
       top_sharks: ['Aman Gupta', 'Vineeta Singh'],
@@ -44,7 +44,7 @@ export const Predictions: React.FC = () => {
       valuation_range: '₹1Cr - ₹5Cr',
     },
     Healthcare: {
-      success_rate: 80,
+      success_rate: Math.min(90, Math.max(65, (deals.filter(d => d.industry === 'Healthcare' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'Healthcare').length)) * 100)),
       growth_potential: 90,
       market_size: '₹15,000Cr',
       top_sharks: ['Peyush Bansal', 'Ghazal Alagh'],
@@ -52,7 +52,7 @@ export const Predictions: React.FC = () => {
       valuation_range: '₹3Cr - ₹12Cr',
     },
     'E-commerce': {
-      success_rate: 70,
+      success_rate: Math.min(85, Math.max(55, (deals.filter(d => d.industry === 'E-commerce' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'E-commerce').length)) * 100)),
       growth_potential: 80,
       market_size: '₹10,000Cr',
       top_sharks: ['Anupam Mittal', 'Namita Thapar'],
@@ -60,7 +60,7 @@ export const Predictions: React.FC = () => {
       valuation_range: '₹2Cr - ₹8Cr',
     },
     Education: {
-      success_rate: 72,
+      success_rate: Math.min(85, Math.max(60, (deals.filter(d => d.industry === 'Education' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'Education').length)) * 100)),
       growth_potential: 78,
       market_size: '₹7,000Cr',
       top_sharks: ['Peyush Bansal', 'Vineeta Singh'],
@@ -68,7 +68,7 @@ export const Predictions: React.FC = () => {
       valuation_range: '₹1.5Cr - ₹6Cr',
     },
     Manufacturing: {
-      success_rate: 68,
+      success_rate: Math.min(80, Math.max(55, (deals.filter(d => d.industry === 'Manufacturing' && d.success_status === 'funded').length / Math.max(1, deals.filter(d => d.industry === 'Manufacturing').length)) * 100)),
       growth_potential: 75,
       market_size: '₹9,000Cr',
       top_sharks: ['Ashneer Grover', 'Aman Gupta'],

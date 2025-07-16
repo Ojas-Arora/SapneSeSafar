@@ -5,15 +5,27 @@ import { SeasonSelector } from '../components/SeasonSelector';
 
 export const Trends: React.FC = () => {
   const { isDarkMode } = useThemeStore();
+  const { deals } = useDealsStore();
 
-  const data = [
-    { month: 'Jan', deals: 12, investment: 150 },
-    { month: 'Feb', deals: 15, investment: 180 },
-    { month: 'Mar', deals: 18, investment: 220 },
-    { month: 'Apr', deals: 16, investment: 190 },
-    { month: 'May', deals: 22, investment: 280 },
-    { month: 'Jun', deals: 25, investment: 310 },
-  ];
+  // Calculate real trend data from deals
+  const data = React.useMemo(() => {
+    const seasonData = deals.reduce((acc: any[], deal) => {
+      const season = acc.find(s => s.season === deal.season);
+      if (season) {
+        season.deals++;
+        season.investment += (deal.deal_amount || 0);
+      } else {
+        acc.push({
+          month: `Season ${deal.season}`,
+          deals: 1,
+          investment: (deal.deal_amount || 0) / 10000000 // Convert to Cr
+        });
+      }
+      return acc;
+    }, []);
+    
+    return seasonData.sort((a, b) => a.month.localeCompare(b.month));
+  }, [deals]);
 
   return (
     <div className="space-y-8">

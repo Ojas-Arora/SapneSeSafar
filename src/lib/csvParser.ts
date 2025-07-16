@@ -78,15 +78,19 @@ export class CSVDataParser {
     if (this.isLoaded) return;
 
     try {
-      // Load the CSV file from the data directory
+      // Try to load the CSV file from the data directory
       const response = await fetch('/data/Shark Tank India.csv');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch CSV: ${response.status}`);
+      }
+      
       const csvText = await response.text();
       
       // Parse CSV using Papa Parse with enhanced configuration
       const parseResult = Papa.parse(csvText, {
         header: true,
         skipEmptyLines: true,
-        dynamicTyping: true,
+        dynamicTyping: false, // Keep as strings for better control
         transformHeader: (header) => this.normalizeHeader(header),
         transform: (value, header) => this.transformValue(value, header)
       });
@@ -94,6 +98,9 @@ export class CSVDataParser {
       if (parseResult.errors.length > 0) {
         console.warn('CSV parsing warnings:', parseResult.errors);
       }
+      
+      console.log('Raw CSV data sample:', parseResult.data.slice(0, 3));
+      console.log('CSV headers:', parseResult.meta.fields);
       
       // Parse the data with comprehensive mapping
       this.parseDealsData(parseResult.data);
@@ -140,6 +147,7 @@ export class CSVDataParser {
 
   private parseDealsData(rawData: any[]): void {
     if (!rawData || rawData.length === 0) {
+      console.log('No CSV data found, generating sample data');
       this.generateEnhancedSampleData();
       return;
     }
@@ -152,107 +160,124 @@ export class CSVDataParser {
       const deal: DealData = {
         id: index + 1,
         season: this.parseNumber(
-          row.season || row.s_no || row.series || row.season_number
+          row.season || row.s_no || row.series || row.season_number || row.sno
         ) || Math.floor(Math.random() * 4) + 1,
         
         episode: this.parseNumber(
-          row.episode || row.ep_no || row.episode_number || row.ep
+          row.episode || row.ep_no || row.episode_number || row.ep || row.episode_no
         ) || Math.floor(Math.random() * 20) + 1,
         
         startup_name: this.parseString(
           row.startup_name || row.brand || row.company_name || 
-          row.startup || row.business_name || row.company
+          row.startup || row.business_name || row.company || row.brand_name
         ) || `Startup ${index + 1}`,
         
         industry: this.parseString(
           row.industry || row.sector || row.category || 
-          row.business_category || row.vertical
+          row.business_category || row.vertical || row.domain
         ) || this.getRandomIndustry(),
         
         ask_amount: this.parseNumber(
           row.ask_amount || row.amount_asked || row.ask || 
-          row.funding_ask || row.investment_ask
+          row.funding_ask || row.investment_ask || row.asked_amount ||
+          row.amount_seeking || row.seeking_amount
         ) || (Math.floor(Math.random() * 50) + 10) * 100000,
         
         ask_equity: this.parseNumber(
           row.ask_equity || row.equity_asked || row.equity || 
-          row.equity_ask || row.stake_asked
+          row.equity_ask || row.stake_asked || row.asked_equity ||
+          row.equity_seeking || row.seeking_equity
         ) || Math.floor(Math.random() * 20) + 5,
         
         valuation: this.parseNumber(
-          row.valuation || row.company_valuation || row.pre_money_valuation
+          row.valuation || row.company_valuation || row.pre_money_valuation ||
+          row.startup_valuation || row.business_valuation
         ) || 0,
         
         deal_amount: this.parseNumber(
           row.deal_amount || row.amount_invested || row.investment || 
-          row.final_amount || row.invested_amount
+          row.final_amount || row.invested_amount || row.deal_investment ||
+          row.final_investment || row.received_amount
         ),
         
         deal_equity: this.parseNumber(
           row.deal_equity || row.equity_given || row.final_equity || 
-          row.equity_taken || row.stake_given
+          row.equity_taken || row.stake_given || row.given_equity ||
+          row.final_stake || row.received_equity
         ),
         
         deal_debt: this.parseNumber(
-          row.deal_debt || row.debt || row.debt_component
+          row.deal_debt || row.debt || row.debt_component || row.loan_amount
         ) || 0,
         
         multiple_sharks: this.parseBoolean(
-          row.multiple_sharks || row.joint_deal || row.multiple_investors
+          row.multiple_sharks || row.joint_deal || row.multiple_investors ||
+          row.joint_investment || row.multiple_shark_deal
         ) || false,
         
         interested_sharks: this.parseSharkArray(
           row.interested_sharks || row.sharks_interested || 
-          row.sharks_shown_interest || row.interested_investors
+          row.sharks_shown_interest || row.interested_investors ||
+          row.sharks_who_showed_interest
         ),
         
         invested_sharks: this.parseSharkArray(
           row.invested_sharks || row.sharks_invested || 
-          row.deal_sharks || row.final_sharks || row.investors
+          row.deal_sharks || row.final_sharks || row.investors ||
+          row.investing_sharks || row.sharks_who_invested
         ),
         
         success_status: this.parseString(
           row.success_status || row.deal_status || row.status || 
-          row.outcome || row.result
+          row.outcome || row.result || row.deal_outcome ||
+          row.pitch_result || row.final_status
         ) || 'pending',
         
         // Additional fields
         pitch_description: this.parseString(
-          row.pitch_description || row.description || row.business_description
+          row.pitch_description || row.description || row.business_description ||
+          row.pitch_summary || row.business_idea
         ),
         
         revenue_current: this.parseNumber(
           row.revenue_current || row.current_revenue || row.revenue || 
-          row.annual_revenue || row.monthly_revenue
+          row.annual_revenue || row.monthly_revenue || row.sales ||
+          row.current_sales || row.turnover
         ),
         
         revenue_projected: this.parseNumber(
           row.revenue_projected || row.projected_revenue || 
-          row.future_revenue || row.target_revenue
+          row.future_revenue || row.target_revenue || row.expected_revenue
         ),
         
         profit_margin: this.parseNumber(
-          row.profit_margin || row.margin || row.profit_percentage
+          row.profit_margin || row.margin || row.profit_percentage ||
+          row.net_margin || row.gross_margin
         ),
         
         team_size: this.parseNumber(
-          row.team_size || row.employees || row.team_members || row.staff
+          row.team_size || row.employees || row.team_members || row.staff ||
+          row.employee_count || row.team_count
         ),
         
         founded_year: this.parseNumber(
-          row.founded_year || row.year_founded || row.establishment_year
+          row.founded_year || row.year_founded || row.establishment_year ||
+          row.started_year || row.inception_year
         ),
         
         location: this.parseString(
-          row.location || row.city || row.headquarters || row.base_location
+          row.location || row.city || row.headquarters || row.base_location ||
+          row.office_location || row.startup_location
         ),
         
         patent_status: this.parseString(
-          row.patent_status || row.patents || row.ip_status
+          row.patent_status || row.patents || row.ip_status ||
+          row.intellectual_property || row.patent_info
         ),
         
         website: this.parseString(
-          row.website || row.website_url || row.company_website
+          row.website || row.website_url || row.company_website ||
+          row.startup_website || row.web_url
         ),
         
         created_at: new Date().toISOString(),
@@ -272,12 +297,15 @@ export class CSVDataParser {
       deal.success_status = this.normalizeStatus(deal.success_status);
 
       return deal;
-    }).filter(deal => deal.startup_name && deal.startup_name !== '');
+    }).filter(deal => deal.startup_name && deal.startup_name !== '' && !deal.startup_name.includes('Startup'));
 
     console.log('Parsed deals:', this.deals.length);
+    console.log('Sample parsed deal:', this.deals[0]);
   }
 
   private normalizeStatus(status: string): string {
+    if (!status) return 'not_funded';
+    
     const statusMap: Record<string, string> = {
       'yes': 'funded',
       'no': 'not_funded',
@@ -289,9 +317,13 @@ export class CSVDataParser {
       'accepted': 'funded',
       'success': 'funded',
       'failed': 'not_funded',
+      'got deal': 'funded',
+      'no_deal': 'not_funded',
+      'deal_made': 'funded',
+      'deal_not_made': 'not_funded',
     };
     
-    return statusMap[status.toLowerCase()] || status;
+    return statusMap[status.toLowerCase()] || (status.toLowerCase().includes('fund') ? 'funded' : 'not_funded');
   }
 
   private parseSharkArray(value: any): string[] {
@@ -301,13 +333,15 @@ export class CSVDataParser {
       return value
         .split(/[,;|&+]/)
         .map(s => s.trim())
-        .filter(s => s && s !== 'None' && s !== 'N/A' && s !== '-')
+        .filter(s => s && s !== 'None' && s !== 'N/A' && s !== '-' && s !== 'null')
         .map(s => this.normalizeSharkName(s));
     }
     return [];
   }
 
   private normalizeSharkName(name: string): string {
+    if (!name || name.trim() === '') return '';
+    
     // Comprehensive shark name mapping
     const nameMap: Record<string, string> = {
       'ashneer grover': 'Ashneer Grover',
@@ -342,7 +376,7 @@ export class CSVDataParser {
     };
 
     const lowerName = name.toLowerCase().trim();
-    return nameMap[lowerName] || name;
+    return nameMap[lowerName] || name.trim();
   }
 
   private getRandomIndustry(): string {
@@ -466,6 +500,8 @@ export class CSVDataParser {
         created_at: new Date().toISOString(),
       };
     }).filter(shark => shark.total_deals > 0 || shark.name in sharkProfiles);
+
+    console.log('Generated sharks data:', this.sharks.length);
   }
 
   private getPreferredIndustries(deals: DealData[]): string[] {
@@ -498,15 +534,16 @@ export class CSVDataParser {
     const startupNames = [
       'TechFlow Solutions', 'FoodieDelight', 'HealthFirst', 'ShopEasy',
       'EduTech Pro', 'ManufactureMax', 'StyleHub', 'BeautyBloom',
-      'PaySecure', 'TravelMate', 'AgriGrow', 'FitLife'
+      'PaySecure', 'TravelMate', 'AgriGrow', 'FitLife', 'DataCrunch',
+      'CloudNine', 'SmartHome', 'GreenEnergy', 'MedTech', 'FashionForward'
     ];
 
-    this.deals = Array.from({ length: 250 }, (_, i) => {
+    this.deals = Array.from({ length: 300 }, (_, i) => {
       const industry = industries[Math.floor(Math.random() * industries.length)];
       const askAmount = (Math.floor(Math.random() * 100) + 10) * 100000;
       const askEquity = Math.floor(Math.random() * 25) + 5;
       const valuation = (askAmount / askEquity) * 100;
-      const hasDeal = Math.random() > 0.3;
+      const hasDeal = Math.random() > 0.35; // 65% success rate
       const dealAmount = hasDeal ? (Math.floor(Math.random() * 50) + 5) * 100000 : null;
       const dealEquity = hasDeal ? Math.floor(Math.random() * 20) + 5 : null;
       

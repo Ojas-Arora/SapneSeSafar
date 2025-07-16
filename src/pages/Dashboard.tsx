@@ -123,47 +123,17 @@ export const Dashboard: React.FC = () => {
   }, [initializeData]);
 
   const stats = useMemo(() => {
-    if (!analytics) {
-      return [
-        {
-          title: 'Total Deals',
-          value: deals.length.toString(),
-          change: '+12%',
-          icon: <Target className="h-4 w-4 md:h-6 md:w-6 text-white" />,
-          color: 'from-shark-blue-500 to-shark-cyan-500',
-          trend: 'up' as const,
-        },
-        {
-          title: 'Active Sharks',
-          value: sharks.length.toString(),
-          change: '+5%',
-          icon: <Users className="h-4 w-4 md:h-6 md:w-6 text-white" />,
-          color: 'from-shark-navy-500 to-shark-blue-500',
-          trend: 'up' as const,
-        },
-        {
-          title: 'Success Rate',
-          value: '68%',
-          change: '+8%',
-          icon: <Award className="h-4 w-4 md:h-6 md:w-6 text-white" />,
-          color: 'from-green-500 to-emerald-500',
-          trend: 'up' as const,
-        },
-        {
-          title: 'Total Investment',
-          value: '₹500Cr+',
-          change: '+25%',
-          icon: <DollarSign className="h-4 w-4 md:h-6 md:w-6 text-white" />,
-          color: 'from-shark-yellow-500 to-orange-500',
-          trend: 'up' as const,
-        },
-      ];
-    }
+    const currentAnalytics = analytics || {
+      totalDeals: deals.length,
+      sharksCount: sharks.length,
+      successRate: deals.length > 0 ? (deals.filter(d => d.success_status === 'funded').length / deals.length) * 100 : 0,
+      totalInvestment: deals.reduce((sum, deal) => sum + (deal.deal_amount || 0), 0)
+    };
 
     return [
       {
         title: 'Total Deals',
-        value: analytics.totalDeals.toString(),
+        value: currentAnalytics.totalDeals.toString(),
         change: '+12%',
         icon: <Target className="h-4 w-4 md:h-6 md:w-6 text-white" />,
         color: 'from-shark-blue-500 to-shark-cyan-500',
@@ -171,7 +141,7 @@ export const Dashboard: React.FC = () => {
       },
       {
         title: 'Active Sharks',
-        value: analytics.sharksCount.toString(),
+        value: currentAnalytics.sharksCount.toString(),
         change: '+5%',
         icon: <Users className="h-4 w-4 md:h-6 md:w-6 text-white" />,
         color: 'from-shark-navy-500 to-shark-blue-500',
@@ -179,7 +149,7 @@ export const Dashboard: React.FC = () => {
       },
       {
         title: 'Success Rate',
-        value: `${analytics.successRate.toFixed(1)}%`,
+        value: `${currentAnalytics.successRate.toFixed(1)}%`,
         change: '+8%',
         icon: <Award className="h-4 w-4 md:h-6 md:w-6 text-white" />,
         color: 'from-green-500 to-emerald-500',
@@ -187,14 +157,14 @@ export const Dashboard: React.FC = () => {
       },
       {
         title: 'Total Investment',
-        value: `₹${(analytics.totalInvestment / 10000000).toFixed(0)}Cr+`,
+        value: `₹${(currentAnalytics.totalInvestment / 10000000).toFixed(0)}Cr+`,
         change: '+25%',
         icon: <DollarSign className="h-4 w-4 md:h-6 md:w-6 text-white" />,
         color: 'from-shark-yellow-500 to-orange-500',
         trend: 'up' as const,
       },
     ];
-  }, [analytics, deals.length, sharks.length]);
+  }, [analytics, deals, sharks]);
 
   const cards = useMemo(() => [
     {
@@ -362,7 +332,7 @@ export const Dashboard: React.FC = () => {
                   <Zap className="h-4 w-4" />
                   <span>Personalized market insights</span>
                 </li>
-                <li className="flex items-center justify-center lg:justify-start space-x-2">
+              {deals.slice(0, 3).map((deal, idx) => (
                   <Zap className="h-4 w-4" />
                   <span>Custom analytics reports</span>
                 </li>
@@ -415,7 +385,7 @@ export const Dashboard: React.FC = () => {
           }`}>
             <h3 className="font-semibold mb-2 text-sm md:text-base">Trending Industry</h3>
             <p className={`text-xs md:text-sm ${isDarkMode ? 'text-shark-navy-400' : 'text-shark-navy-600'}`}>
-              {analytics ? `${analytics.successRate.toFixed(0)}% success rate this season` : 'Analyzing trends...'}
+              {`${((deals.filter(d => d.success_status === 'funded').length / deals.length) * 100).toFixed(0)}% success rate this season`}
             </p>
           </div>
           <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl ${

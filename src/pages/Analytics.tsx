@@ -69,7 +69,7 @@ export const Analytics: React.FC = () => {
   }, [isDarkMode]);
 
   // Calculate analytics data
-  const totalInvestment = deals.reduce((sum, deal) => sum + deal.deal_amount, 0);
+  const totalInvestment = deals.reduce((sum, deal) => sum + (deal.deal_amount || 0), 0);
   const avgValuation = deals.reduce((sum, deal) => sum + deal.valuation, 0) / deals.length;
   const successRate = (deals.filter(deal => deal.success_status === 'funded').length / deals.length) * 100;
 
@@ -77,12 +77,12 @@ export const Analytics: React.FC = () => {
     const season = acc.find(s => s.season === deal.season);
     if (season) {
       season.deals++;
-      season.investment += deal.deal_amount;
+      season.investment += (deal.deal_amount || 0);
     } else {
       acc.push({
         season: deal.season,
         deals: 1,
-        investment: deal.deal_amount,
+        investment: (deal.deal_amount || 0),
       });
     }
     return acc;

@@ -4,24 +4,37 @@ import { SeasonSelector } from '../components/SeasonSelector';
 
 export const Industries: React.FC = () => {
   const { isDarkMode } = useThemeStore();
+  const { deals } = useDealsStore();
 
-  const industries = [
-    {
-      name: "Technology",
-      deals: 45,
-      totalInvestment: "₹120Cr",
-      avgValuation: "₹8Cr",
-      growth: "+35%"
-    },
-    {
-      name: "Healthcare",
-      deals: 32,
-      totalInvestment: "₹85Cr",
-      avgValuation: "₹6.5Cr",
-      growth: "+28%"
-    },
-    // Add more industries...
-  ];
+  // Calculate real industry data from deals
+  const industries = React.useMemo(() => {
+    const industryMap = deals.reduce((acc: any, deal) => {
+      if (!acc[deal.industry]) {
+        acc[deal.industry] = {
+          name: deal.industry,
+          deals: 0,
+          totalInvestment: 0,
+          totalValuation: 0,
+          fundedDeals: 0
+        };
+      }
+      acc[deal.industry].deals++;
+      acc[deal.industry].totalInvestment += (deal.deal_amount || 0);
+      acc[deal.industry].totalValuation += deal.valuation;
+      if (deal.success_status === 'funded') {
+        acc[deal.industry].fundedDeals++;
+      }
+      return acc;
+    }, {});
+
+    return Object.values(industryMap).map((industry: any) => ({
+      name: industry.name,
+      deals: industry.deals,
+      totalInvestment: `₹${(industry.totalInvestment / 10000000).toFixed(1)}Cr`,
+      avgValuation: `₹${(industry.totalValuation / industry.deals / 10000000).toFixed(1)}Cr`,
+      growth: `${((industry.fundedDeals / industry.deals) * 100).toFixed(0)}%`
+    }));
+  }, [deals]);
 
   return (
     <div className="space-y-8">

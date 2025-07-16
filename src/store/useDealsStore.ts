@@ -154,6 +154,8 @@ export const useDealsStore = create<DealsStore>((set, get) => ({
     try {
       const deals = csvParser.getDeals();
       const analytics = csvParser.getAnalytics();
+      console.log('Fetched deals:', deals.length);
+      console.log('Analytics:', analytics);
       set({ deals, analytics, error: null });
     } catch (error) {
       console.error('Error fetching deals:', error);
@@ -164,6 +166,7 @@ export const useDealsStore = create<DealsStore>((set, get) => ({
   fetchSharks: async () => {
     try {
       const sharks = csvParser.getSharks();
+      console.log('Fetched sharks:', sharks.length);
       set({ sharks, error: null });
     } catch (error) {
       console.error('Error fetching sharks:', error);
