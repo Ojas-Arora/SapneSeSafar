@@ -332,7 +332,7 @@ export const Dashboard: React.FC = () => {
                   <Zap className="h-4 w-4" />
                   <span>Personalized market insights</span>
                 </li>
-              {deals.slice(0, 3).map((deal, idx) => (
+                <li className="flex items-center justify-center lg:justify-start space-x-2">
                   <Zap className="h-4 w-4" />
                   <span>Custom analytics reports</span>
                 </li>
