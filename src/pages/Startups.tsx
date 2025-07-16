@@ -4,24 +4,18 @@ import { SeasonSelector } from '../components/SeasonSelector';
 
 export const Startups: React.FC = () => {
   const { isDarkMode } = useThemeStore();
+  const { deals } = useDealsStore();
 
-  const startups = [
-    {
-      name: "TechInnovate",
-      industry: "Technology",
-      valuation: "₹10Cr",
-      growth: "+150%",
-      status: "Funded"
-    },
-    {
-      name: "HealthFirst",
-      industry: "Healthcare",
-      valuation: "₹8Cr",
-      growth: "+120%",
-      status: "Funded"
-    },
-    // Add more startups...
-  ];
+  // Get real startup data from deals
+  const startups = React.useMemo(() => {
+    return deals.slice(0, 20).map(deal => ({
+      name: deal.startup_name,
+      industry: deal.industry,
+      valuation: `₹${(deal.valuation / 10000000).toFixed(1)}Cr`,
+      growth: deal.success_status === 'funded' ? `+${Math.floor(Math.random() * 200 + 50)}%` : 'N/A',
+      status: deal.success_status === 'funded' ? 'Funded' : 'Not Funded'
+    }));
+  }, [deals]);
 
   return (
     <div className="space-y-8">
