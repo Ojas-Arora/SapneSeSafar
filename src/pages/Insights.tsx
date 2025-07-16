@@ -1,5 +1,6 @@
 import React from 'react';
 import { useThemeStore } from '../store/useThemeStore';
+import { useDealsStore } from '../store/useDealsStore';
 import { SeasonSelector } from '../components/SeasonSelector';
 
 export const Insights: React.FC = () => {
