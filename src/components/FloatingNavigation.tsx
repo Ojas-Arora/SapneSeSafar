@@ -15,6 +15,22 @@ export const FloatingNavigation: React.FC<FloatingNavigationProps> = ({ isOpen, 
 
   const menuItems = useMemo(() => [
     { 
+      icon: Home, 
+      label: 'Home Feed', 
+      path: '/', 
+      color: 'from-blue-500 to-purple-500',
+      description: 'Articles & Topics',
+      category: 'Core'
+    },
+    { 
+      icon: Compass, 
+      label: 'Navigation Hub', 
+      path: '/navigation-hub', 
+      color: 'from-purple-500 to-pink-500',
+      description: 'All Features',
+      category: 'Core'
+    },
+    { 
       icon: BarChart2, 
       label: 'Analytics Hub', 
       path: '/analytics', 

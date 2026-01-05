@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { FloatingNavigation } from './components/FloatingNavigation';
+import { ChatSidebar } from './components/ChatSidebar';
+import { Feed } from './pages/Feed';
+import { NavigationHub } from './pages/NavigationHub';
 import { Dashboard } from './pages/Dashboard';
 import { Sharks } from './pages/Sharks';
 import { Deals } from './pages/Deals';
@@ -132,13 +135,18 @@ function App() {
         {/* Revolutionary Floating Navigation */}
         <FloatingNavigation isOpen={isNavOpen} onClose={closeNav} />
         
+        {/* Community Chat Sidebar */}
+        <ChatSidebar />
+        
         <motion.main 
           className="pt-16 md:pt-20 relative z-10"
           layout
         >
           <div className="p-3 md:p-6">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Feed />} />
+              <Route path="/navigation-hub" element={<NavigationHub />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/sharks" element={<Sharks />} />
               <Route path="/deals" element={<Deals />} />
               <Route path="/analytics" element={<Analytics />} />
