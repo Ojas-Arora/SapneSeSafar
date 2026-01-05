@@ -386,11 +386,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Issue Tracker**: Bug reports, feature requests, and development discussions
 - **Email Support**: Direct assistance for premium users and enterprise clients
 
-### Contact Information
-- **Email**: support@tanktimecapsule.com
-- **Twitter**: [@TankTimeCapsule](https://twitter.com/tanktimecapsule)
-- **LinkedIn**: [SapneSeSafar](https://linkedin.com/company/tanktimecapsule)
-- **GitHub**: [Issues and Discussions](https://github.com/your-username/tank-time-capsule)
 
 ---
 

@@ -9,7 +9,7 @@ export const Deals: React.FC = () => {
   const { isDarkMode } = useThemeStore();
 
   const totalValuation = deals.reduce((acc, deal) => acc + deal.valuation, 0);
-  const avgEquity = deals.reduce((acc, deal) => acc + deal.deal_equity, 0) / deals.length;
+  const avgEquity = deals.reduce((acc, deal) => acc + (deal.deal_equity || 0), 0) / deals.length;
   const successRate = (deals.filter(deal => deal.success_status === 'funded').length / deals.length) * 100;
 
   const industryData = deals.reduce((acc: any, deal) => {
